@@ -1,7 +1,13 @@
 # Neural-Network
 
+#行列計算ライブラリ
 import numpy
+#シグモイド関数の利用
 import scipy.special
+#配列の可視化
+import matplotlib.pyplot
+#描画の際、外部ウィンドウは開かない
+%matplotlib inline
 
 #ニューラルネットワーククラスの定義
 class neuralNetwork:
@@ -70,3 +76,37 @@ class neuralNetwork:
         final_outputs = self.activation_function(final_inputs)
         
         return final_outputs
+    
+    
+#入力層、隠れ層、出力層のノード数
+input_nodes = 784
+hidden_nodes = 100
+output_nodes = 10
+
+#学習率の設定
+learning_rate = 0.3
+
+#ニューラルネットワークのインスタンスの生成
+n = neuralNetwork(input_nodes, hidden_nodes, output_nodes, learning_rate)
+
+
+#MNIST 訓練データCSVの読み込み、リスト化
+training_data_file = open("mnist_dataset/mnist_train_100.csv", 'r')
+training_data_list = training_data_file.readlines()
+training_data_file.close()
+
+#ニューラルネットワークの学習
+
+#訓練データのすべてに対して実行
+for record in training_data_list:
+    #データを','で分割
+    all_values = data_list[0].split(',')
+    #scale input to range 0.01 to 1.00
+    inputs = (numpy.asfarray(all_values[1:])/255.0 * 0.99) + 0.01
+    #target配列の作成（正解位置が 0.99 他は 0.01）
+    targets = numpy.zeros(output_nodes) + 0.01
+    targets[int(all_values[0])] = 0.99
+    
+    n.train(inputs, targets)
+    
+    pass
